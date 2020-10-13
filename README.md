@@ -1,7 +1,7 @@
 # Image Super Resolution  
 
 ## Examples
-Below are some examples showing how to run the <code>main.py</code> demo and the associated color transfers between images.
+Below are some examples showing how to run the <code>main.py</code> demos.
 
 + **EDSR**
 
