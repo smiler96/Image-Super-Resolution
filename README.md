@@ -14,3 +14,4 @@ Below are some examples showing how to run the <code>main.py</code> demo and the
 |  ----  | ----  | ----  |
 | <img src="images/0801x8.png"  alt="transfer" />  | <img src="logs/result/EDSR/0801x8_sigmoid.png" alt="transfer" /> | <img src="logs/result/EDSR/0801x8_None.png" alt="transfer" /> |
 
++ **RCAN**
