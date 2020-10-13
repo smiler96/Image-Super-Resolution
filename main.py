@@ -2,6 +2,7 @@ import random
 import torch
 from option import args
 from train import train
+from test import test
 
 if __name__ == "__main__":
 
@@ -12,4 +13,4 @@ if __name__ == "__main__":
         with torch.autograd.detect_anomaly():
             train(args)
     else:
-        pass
+        test(args)
