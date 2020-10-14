@@ -5,6 +5,7 @@ import time
 import cv2
 from importlib import import_module
 from loguru import logger
+from utils import denormalize_, normalize_
 
 def check_edsr_logs(args):
     log_root = args.log_root
@@ -18,12 +19,13 @@ def get_input_image(args):
     img = cv2.imread(args.test_file)
     file_name = os.path.basename(args.test_file).split('.')[0]
 
-    if args.normalization == 0:
-        pass
-    elif args.normalization == 1:
-        img = np.float32(img) / 255.0
-    else:
-        raise NotImplementedError
+    # if args.normalization == 0:
+    #     pass
+    # elif args.normalization == 1:
+    #     img = np.float32(img) / 255.0
+    # else:
+    #     raise NotImplementedError
+    img = normalize_(img, type=args.normalization)
 
     img = np.transpose(img, (2, 0, 1)).astype(np.float32)
     img = torch.from_numpy(img)
@@ -58,14 +60,16 @@ def test(args):
         data = get_input_image(args)
         y_hat = model(data['img'])
         y_hat = y_hat[0].cpu().numpy()
+        y_hat = np.transpose(y_hat, (1, 2, 0))
+
+        # if args.normalization == 1:
+        #     y_hat = y_hat * 255.0
+        y_hat = denormalize_(y_hat, args.normalization)
 
         # clip is really important, otherwise the anomaly rgb noise data exists
         y_hat = np.clip(y_hat, 0.0, 255.0)
 
-        if args.normalization == 1:
-            y_hat = y_hat * 255.0
         y_hat = np.uint8(y_hat)
-        y_hat = np.transpose(y_hat, (1, 2, 0))
         end = time.time()
         dt = end - start
         logger.info(f"Test file {args.test_file} costs {dt}ms.")
@@ -75,13 +79,13 @@ def test(args):
 if __name__ == "__main__":
     from option import args
 
-    args.test_file = 'D:/Dataset/DIV2K/0801x8.png'
+    args.test_file = 'images/0829x8.png'
     args.scale = 8
     args.res_scale = 0.1
 
     # no normalization
     args.last_act = None
-    args.normalization = 0
+    args.normalization = 2
 
     # divided by 255.0
     # args.last_act = 'sigmoid'

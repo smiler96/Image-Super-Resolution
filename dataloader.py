@@ -6,6 +6,7 @@ import torch
 from loguru import logger
 from torch.utils.data import Dataset
 import numpy as np
+from utils import normalize_
 
 def get_patch(hr_img, lr_img, patch_size=96, scale=4):
     lh, lw = lr_img.shape[0], lr_img.shape[1]
@@ -65,8 +66,8 @@ class SRDataset(Dataset):
         return self.len
 
     def __getitem__(self, idx):
-        hr_img = cv2.imread(self.hr_lists[idx])
-        lr_img = cv2.imread(self.lr_lists[idx])
+        hr_img = cv2.imread(self.hr_lists[idx]).astype(np.float32)
+        lr_img = cv2.imread(self.lr_lists[idx]).astype(np.float32)
         file_name = os.path.basename(self.hr_lists[idx]).split('.')[0]
 
         if self.need_patch:
@@ -79,13 +80,15 @@ class SRDataset(Dataset):
             patch_pair = augment(patch_pair)
 
         # normalization
-        if self.normalization == 0:
-            pass
-        elif self.normalization == 1:
-            patch_pair['hr_patch'] = patch_pair['hr_patch'] / 255.0
-            patch_pair['lr_patch'] = patch_pair['lr_patch'] / 255.0
-        else:
-            raise NotImplementedError
+        # if self.normalization == 0:
+        #     pass
+        # elif self.normalization == 1:
+        #     patch_pair['hr_patch'] = patch_pair['hr_patch'] / 255.0
+        #     patch_pair['lr_patch'] = patch_pair['lr_patch'] / 255.0
+        # else:
+        #     raise NotImplementedError
+        patch_pair['hr_patch'] = normalize_(patch_pair['hr_patch'], type=self.normalization)
+        patch_pair['lr_patch'] = normalize_(patch_pair['lr_patch'], type=self.normalization)
 
         patch_pair['hr_patch'] = np.transpose(patch_pair['hr_patch'], (2, 0, 1)).astype(np.float32)
         patch_pair['lr_patch'] = np.transpose(patch_pair['lr_patch'], (2, 0, 1)).astype(np.float32)

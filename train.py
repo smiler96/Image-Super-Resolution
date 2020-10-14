@@ -10,6 +10,7 @@ from dataloader import SRDataset
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torch.optim.lr_scheduler import StepLR
+from utils import denormalize_
 
 def check_edsr_logs(args):
     log_root = args.log_root
@@ -158,9 +159,15 @@ def train(args):
                 y_hat = y_hat[0].detach().cpu().numpy()
                 y = np.transpose(y, (1, 2, 0))
                 y_hat = np.transpose(y_hat, (1, 2, 0))
-                if args.normalization == 1:
-                    y = y * 255.0
-                    y_hat = y_hat * 255.0
+                # if args.normalization == 1:
+                #     y = y * 255.0
+                #     y_hat = y_hat * 255.0
+                y = denormalize_(y, args.normalization)
+                y_hat = denormalize_(y_hat, args.normalization)
+                # clip is really important, otherwise the anomaly rgb noise data exists
+                y = np.clip(y, 0.0, 255.0)
+                y_hat = np.clip(y_hat, 0.0, 255.0)
+
                 _res = np.concatenate([y_hat, y], axis=1).astype(np.uint8)
                 cv2.imwrite(os.path.join(args.log_img_root, f'{epoch}_{batch}.png'), _res)
 
@@ -191,7 +198,7 @@ if __name__ == "__main__":
     args.last_act = None
     args.augment = True
 
-    args.normalization = 0
+    args.normalization = 2
 
     with torch.autograd.detect_anomaly():
         train(args)
