@@ -189,6 +189,7 @@ def train(args):
 if __name__ == "__main__":
     from option import args
 
+    args.model = 'EDSR'
     args.hr_train_path = 'D:/Dataset/DIV2K/DIV2K_train_HR/'
     args.lr_train_path = 'D:/Dataset/DIV2K/DIV2K_train_LR_x8/'
     args.hr_val_path = 'D:/Dataset/DIV2K/DIV2K_valid_HR/'

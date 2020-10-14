@@ -45,7 +45,6 @@ class ResBlock(nn.Module):
         x = res + x
         return x
 
-
 class UpsampleBlock(nn.Module):
     def __init__(self, scale=4, n_feats=64, kernel_size=3, stride=1, bias=True, bn=False, act=nn.ReLU(True)):
         super(UpsampleBlock, self).__init__()

@@ -91,9 +91,11 @@ parser.add_argument('--RDNconfig', type=str, default='B',
                     help='parameters config of RDN. (Use in RDN)')
 
 # Option for Residual channel attention network (RCAN)
-parser.add_argument('--n_resgroups', type=int, default=10,
+parser.add_argument('--n_rg', type=int, default=10,
                     help='number of residual groups')
-parser.add_argument('--reduction', type=int, default=32,
+parser.add_argument('--n_rcab', type=int, default=20,
+                    help='number of residual groups')
+parser.add_argument('--reduction', type=int, default=16,
                     help='number of feature maps reduction')
 
 # Training specifications
