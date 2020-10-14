@@ -12,7 +12,8 @@ Below are some examples showing how to run the <code>main.py</code> demos.
 
 |  LR   | EDSR_sigmoid | EDSR_None|
 |  ----  | ----  | ----  |
-| <img src="images/0801x8.png"  alt="transfer" />  | <img src="logs/result/EDSR/0801x8_sigmoid.png" alt="transfer" /> | <img src="logs/result/EDSR/0801x8_None.png" alt="transfer" /> |
+| <img src="images/0801x8.png" />  | <img src="logs/result/EDSR/0801x8_sigmoid.png" /> | <img src="logs/result/EDSR/0801x8_None.png" /> |
+| <img src="images/0829x8.png" />  | <img src="logs/result/EDSR/0829x8_sigmoid.png" /> | <img src="logs/result/EDSR/0829x8_None.png" /> |
 
 + **RCAN** ECCV2020
 
