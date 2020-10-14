@@ -12,30 +12,36 @@ from torch.utils.tensorboard import SummaryWriter
 from torch.optim.lr_scheduler import StepLR
 from utils import denormalize_
 
-def check_edsr_logs(args):
+def check_logs(args):
     log_root = args.log_root
     os.makedirs(log_root, exist_ok=True)
 
+    if args.model == 'EDSR':
+        name = f'{args.model}_{args.act}_{args.n_resblocks}_{args.n_feats}_{args.last_act}'
+    elif args.model == 'RCAN':
+        name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}'
+    else:
+        raise NotImplementedError
     # tensorboard log root
-    args.tblog = log_root + f'/tblog/{args.model}_{args.act}_{args.n_resblocks}_{args.n_feats}_{args.last_act}/'
+    args.tblog = log_root + f'/tblog/' + name + '/'
     if os.path.exists(args.tblog):
         # os.rmdir(args.tblog)
         shutil.rmtree(args.tblog)
     os.makedirs(args.tblog, exist_ok=True)
 
     # model weight .pth
-    args.weight_pth = log_root + f'/weight/{args.model}_{args.act}_{args.n_resblocks}_{args.n_feats}_{args.last_act}.pth'
+    args.weight_pth = log_root + f'/weight/' + name + '.pth'
     os.makedirs(log_root + f'/weight/', exist_ok=True)
 
     # train visulization root
-    args.log_img_root = log_root + f'/val_result/{args.model}_{args.act}_{args.n_resblocks}_{args.n_feats}_{args.last_act}/'
+    args.log_img_root = log_root + f'/val_result/' + name + '/'
     if os.path.exists(args.log_img_root):
         # os.rmdir(args.log_img_root)
         shutil.rmtree(args.log_img_root)
     os.makedirs(args.log_img_root, exist_ok=True)
 
     # logger file
-    args.logger = log_root + f'/logger/{args.model}_{args.act}_{args.n_resblocks}_{args.n_feats}_{args.last_act}.txt'
+    args.logger = log_root + f'/logger/' + name + '.txt'
     if os.path.exists(args.logger):
         os.remove(args.logger)
     logger.add(args.logger, rotation="200 MB", backtrace=True, diagnose=True)
@@ -90,8 +96,7 @@ def train(args):
     val_dataloader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=args.n_threads)
 
     # chech log
-    if args.model == 'EDSR':
-        check_edsr_logs(args)
+    check_logs(args)
     writer = SummaryWriter(log_dir=args.tblog)
     # check for gpu
     device = check_hardware(args)
