@@ -10,10 +10,10 @@ Below are some examples showing how to run the <code>main.py</code> demos.
 
 <code>$ >python main.py --phase 'test' --test_file 'images/0801x8.png' --scale 8 --last_act 'sigmoid' normalization 1</code>
 
-|  LR   | EDSR_sigmoid | EDSR_None|
-|  ----  | ----  | ----  |
-| <img src="images/0801x8.png" />  | <img src="logs/result/EDSR/0801x8_sigmoid.png" /> | <img src="logs/result/EDSR/0801x8_None.png" /> |
-| <img src="images/0829x8.png" />  | <img src="logs/result/EDSR/0829x8_sigmoid.png" /> | <img src="logs/result/EDSR/0829x8_None.png" /> |
+|  LR   | HR | EDSR_sigmoid | EDSR_None|
+|  ---- |  ---- | ----  | ----  |
+| <img src="images/0801x8.png" /> | <img src="images/0801.png" /> | <img src="logs/result/EDSR/0801x8_sigmoid.png" /> | <img src="logs/result/EDSR/0801x8_None.png" /> |
+| <img src="images/0829x8.png" /> | <img src="images/0829.png" /> | <img src="logs/result/EDSR/0829x8_sigmoid.png" /> | <img src="logs/result/EDSR/0829x8_None.png" /> |
 
 + **RCAN** ECCV2020
 
