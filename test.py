@@ -7,10 +7,16 @@ from importlib import import_module
 from loguru import logger
 from utils import denormalize_, normalize_
 
-def check_edsr_logs(args):
+def check_logs(args):
     log_root = args.log_root
+    if args.model == 'EDSR':
+        name = f'{args.model}_{args.act}_{args.n_resblocks}_{args.n_feats}_{args.last_act}'
+    elif args.model == 'RCAN':
+        name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}'
+    else:
+        raise NotImplementedError
     # model weight .pth
-    args.weight_pth = log_root + f'/weight/{args.model}_{args.act}_{args.n_resblocks}_{args.n_feats}_{args.last_act}.pth'
+    args.weight_pth = log_root + f'/weight/' + name + '.pth'
     # result save root
     args.result_root = log_root + f'/result/{args.model}/'
     os.makedirs(args.result_root, exist_ok=True)
@@ -36,8 +42,7 @@ def get_input_image(args):
 def test(args):
 
     # chech log
-    if args.model == 'EDSR':
-        check_edsr_logs(args)
+    check_logs(args)
 
     # check the model
     module = import_module('model.' + args.model.lower())
@@ -81,11 +86,17 @@ if __name__ == "__main__":
 
     args.test_file = 'images/0829x8.png'
     args.scale = 8
-    args.res_scale = 0.1
+    args.normalization = 2
 
+    args.model = 'RCAN'
+    args.act = 'relu'
+    args.n_rg = 10
+    args.n_rcab = 20
+    args.n_feats = 64
+
+    args.res_scale = 0.1
     # no normalization
     args.last_act = None
-    args.normalization = 2
 
     # divided by 255.0
     # args.last_act = 'sigmoid'

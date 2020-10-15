@@ -194,17 +194,25 @@ def train(args):
 if __name__ == "__main__":
     from option import args
 
-    args.model = 'EDSR'
     args.hr_train_path = 'D:/Dataset/DIV2K/DIV2K_train_HR/'
     args.lr_train_path = 'D:/Dataset/DIV2K/DIV2K_train_LR_x8/'
     args.hr_val_path = 'D:/Dataset/DIV2K/DIV2K_valid_HR/'
     args.lr_val_path = 'D:/Dataset/DIV2K/DIV2K_valid_LR_x8/'
     args.scale = 8
-    args.res_scale = 0.1
-    args.last_act = None
     args.augment = True
-
     args.normalization = 2
+
+    args.batch_size = 24
+
+    # args.model = 'EDSR'
+    # args.res_scale = 0.1
+    # args.last_act = None
+
+    args.model = 'RCAN'
+    args.act = 'relu'
+    args.n_rg = 10
+    args.n_rcab = 20
+    args.n_feats = 64
 
     with torch.autograd.detect_anomaly():
         train(args)
