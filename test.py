@@ -84,6 +84,8 @@ def test(args):
             suffix_name = f'{args.last_act}'
         elif args.model == 'RCAN':
             suffix_name = f'{args.last_act}_{args.instance_norm}'
+        elif args.model == 'RDN':
+            suffix_name = f'{args.act}_{args.n_feats}'
         else:
             raise NotImplementedError
         cv2.imwrite(os.path.join(args.result_root, data['fn'] + f'_' + suffix_name + '.png'), y_hat)
@@ -96,16 +98,22 @@ if __name__ == "__main__":
     args.scale = 8
     args.normalization = 2
 
-    args.model = 'RCAN'
-    args.act = 'relu'
-    args.n_rg = 10
-    args.n_rcab = 20
-    args.n_feats = 64
-    args.instance_norm = True
+    # args.model = 'RCAN'
+    # args.act = 'relu'
+    # args.n_rg = 10
+    # args.n_rcab = 20
+    # args.n_feats = 64
+    # args.instance_norm = True
 
-    args.res_scale = 0.1
+    args.model = 'RDN'
+    args.n_feats = 64
+    args.D = 20
+    args.G = 32
+    args.C = 6
+
+    # args.res_scale = 0.1
     # no normalization
-    args.last_act = None
+    # args.last_act = None
 
     # divided by 255.0
     # args.last_act = 'sigmoid'
