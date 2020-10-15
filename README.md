@@ -22,12 +22,10 @@ Below are some examples showing how to run the <code>main.py</code> demos.
 
 <code>$ >python main.py --phase 'test' --model 'RCAN' --test_file 'images/0801x8.png' --scale 8 --n_rg 10 --n_rcab 20 --n_feats 64 --normalization 2</code>
 
-
-|  LR   | HR | RCAN |
-|  ---- |  ---- | ----  | ----  |
+|  LR   |  HR   |  RCAN |
+|  ---- |  ---- |  ---- | 
 | <img src="images/0801x8.png" /> | <img src="images/0801.png" /> | <img src="logs/result/RCAN/0801x8_None.png" /> | 
 | <img src="images/0829x8.png" /> | <img src="images/0829.png" /> | <img src="logs/result/RCAN/0829x8_None.png" /> |
-
 
 + **DBPN** CVPR2018
 
