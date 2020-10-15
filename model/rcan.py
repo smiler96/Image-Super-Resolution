@@ -34,7 +34,8 @@ class ChannelAttentation(nn.Module):
         return x
 
 class ResChannelAttBlock(nn.Module):
-    def __init__(self, n_feats=64, reduction=16, kernel_size=3, stride=1, bias=True, bn=False, act=nn.ReLU(True)):
+    def __init__(self, n_feats=64, reduction=16, kernel_size=3, stride=1, bias=True, bn=False, instance_norm=False,
+                 act=nn.ReLU(True)):
         super(ResChannelAttBlock, self).__init__()
         assert act is not None
         self.op = []
@@ -42,6 +43,8 @@ class ResChannelAttBlock(nn.Module):
             self.op.append(conv_(n_feats, n_feats, kernel_size=kernel_size, stride=stride, bias=bias))
             if bn:
                 self.op.append(nn.BatchNorm2d(n_feats))
+            if instance_norm:
+                self.op.append(nn.InstanceNorm2d(n_feats))
             if i == 0:
                 self.op.append(act)
         self.op.append(ChannelAttentation(channels=n_feats, reduction=reduction))
@@ -53,14 +56,15 @@ class ResChannelAttBlock(nn.Module):
         return x
 
 class ResGroup(nn.Module):
-    def __init__(self, n_rcab=20, n_feats=64, reduction=16, kernel_size=3, stride=1, bias=True, bn=False, act=nn.ReLU(True)):
+    def __init__(self, n_rcab=20, n_feats=64, reduction=16, kernel_size=3, stride=1, bias=True, bn=False,
+                 instance_norm=False, act=nn.ReLU(True)):
         super(ResGroup, self).__init__()
         assert act is not None
         self.op = []
 
         for _ in range(n_rcab):
             self.op.append(ResChannelAttBlock(n_feats=n_feats, reduction=reduction, kernel_size=kernel_size,
-                                              stride=stride, bias=bias, bn=bn, act=act))
+                                              stride=stride, bias=bias, bn=bn, instance_norm=instance_norm, act=act))
 
         self.op.append(conv_(in_channels=n_feats, out_channels=n_feats, kernel_size=kernel_size, stride=stride, bias=bias))
         self.op = nn.Sequential(*self.op)
@@ -72,18 +76,20 @@ class ResGroup(nn.Module):
 
 class RCAN(nn.Module):
     def __init__(self, in_c=3, out_c=3, scale=4, n_feats=64, n_rg=10, n_rcab=20,
-                 kernel_size=3, stride=1, bias=True, bn=False, act=nn.ReLU(True)):
+                 kernel_size=3, stride=1, bias=True, bn=False, instance_norm=False, act=nn.ReLU(True)):
         super(RCAN, self).__init__()
 
         self.head = conv_(in_c, n_feats, kernel_size=kernel_size, stride=stride)
 
         self.body = [ResGroup(n_rcab=n_rcab, n_feats=n_feats, kernel_size=kernel_size, stride=stride, bias=bias,
-                              bn=bn, act=act) for _ in range(n_rg)]
+                              bn=bn, instance_norm=instance_norm, act=act) for _ in range(n_rg)]
         self.body = nn.Sequential(*self.body)
 
         self.tail = [UpsampleBlock(scale=scale, n_feats=n_feats, kernel_size=kernel_size,
-                                   stride=stride, bias=bias, bn=bn, act=act),
-                     conv_(n_feats, out_c, kernel_size=kernel_size, stride=stride, bias=bias)]
+                                   stride=stride, bias=bias, bn=bn, act=act)]
+        if instance_norm:
+            self.tail.append(nn.InstanceNorm2d(n_feats))
+        self.tail.append(conv_(n_feats, out_c, kernel_size=kernel_size, stride=stride, bias=bias))
         self.tail = nn.Sequential(*self.tail)
 
     def forward(self, x):

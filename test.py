@@ -12,7 +12,9 @@ def check_logs(args):
     if args.model == 'EDSR':
         name = f'{args.model}_{args.act}_{args.n_resblocks}_{args.n_feats}_{args.last_act}'
     elif args.model == 'RCAN':
-        name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}'
+        name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}_{args.instance_norm}'
+    elif args.model == 'RDN':
+        name = f'{args.model}_{args.act}_{args.n_feats}_{args.D}_{args.G}_{args.C}'
     else:
         raise NotImplementedError
     # model weight .pth
@@ -78,8 +80,14 @@ def test(args):
         end = time.time()
         dt = end - start
         logger.info(f"Test file {args.test_file} costs {dt}ms.")
-        cv2.imwrite(os.path.join(args.result_root, data['fn'] + f'_{args.last_act}.png'), y_hat)
-        logger.info(f"Write {os.path.join(args.result_root, data['fn'] + '_sr.png')}.")
+        if args.model == 'EDSR':
+            suffix_name = f'{args.last_act}'
+        elif args.model == 'RCAN':
+            suffix_name = f'{args.last_act}_{args.instance_norm}'
+        else:
+            raise NotImplementedError
+        cv2.imwrite(os.path.join(args.result_root, data['fn'] + f'_' + suffix_name + '.png'), y_hat)
+        logger.info(f"Write {os.path.join(args.result_root, data['fn'] + f'_' + suffix_name + '.png')}.")
 
 if __name__ == "__main__":
     from option import args
@@ -93,6 +101,7 @@ if __name__ == "__main__":
     args.n_rg = 10
     args.n_rcab = 20
     args.n_feats = 64
+    args.instance_norm = True
 
     args.res_scale = 0.1
     # no normalization

@@ -19,7 +19,9 @@ def check_logs(args):
     if args.model == 'EDSR':
         name = f'{args.model}_{args.act}_{args.n_resblocks}_{args.n_feats}_{args.last_act}'
     elif args.model == 'RCAN':
-        name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}'
+        name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}_{args.instance_norm}'
+    elif args.model == 'RDN':
+        name = f'{args.model}_{args.act}_{args.n_feats}_{args.D}_{args.G}_{args.C}'
     else:
         raise NotImplementedError
     # tensorboard log root
@@ -202,17 +204,24 @@ if __name__ == "__main__":
     args.augment = True
     args.normalization = 2
 
-    args.batch_size = 24
+    args.batch_size = 32
 
     # args.model = 'EDSR'
     # args.res_scale = 0.1
     # args.last_act = None
 
-    args.model = 'RCAN'
-    args.act = 'relu'
-    args.n_rg = 10
-    args.n_rcab = 20
+    # args.model = 'RCAN'
+    # args.act = 'relu'
+    # args.instance_norm = True
+    # args.n_rg = 10
+    # args.n_rcab = 20
+    # args.n_feats = 64
+
+    args.model = 'RDN'
     args.n_feats = 64
+    args.D = 20
+    args.G = 32
+    args.C = 6
 
     with torch.autograd.detect_anomaly():
         train(args)

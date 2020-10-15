@@ -29,4 +29,5 @@ Below are some examples showing how to run the <code>main.py</code> demos.
 | EDSR_sigmoid | <img src="logs/result/EDSR/0801x8_sigmoid.png" /> | <img src="logs/result/EDSR/0829x8_sigmoid.png" /> |
 | EDSR_None |  <img src="logs/result/EDSR/0801x8_None.png" /> | <img src="logs/result/EDSR/0829x8_None.png" /> | 
 | RCAN |  <img src="logs/result/RCAN/0801x8_None.png" /> | <img src="logs/result/RCAN/0829x8_None.png" /> | 
+| RCAN_InstanceNorm |  <img src="logs/result/RCAN/0801x8_None_True.png" /> | <img src="logs/result/RCAN/0829x8_None_True.png" /> | 
  
