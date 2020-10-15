@@ -23,7 +23,7 @@ Below are some examples showing how to run the <code>main.py</code> demos.
 + **RDN** CVPR2018
 
 | Method  | Img1 | Img2 |
-| ---- | ---- | ---- | 
+| ---- | :----: | :----: | 
 | LR | <img src="images/0801x8.png" /> | <img src="images/0829x8.png" /> |
 | HR | <img src="images/0801.png" /> | <img src="images/0829.png" /> |
 | EDSR_sigmoid | <img src="logs/result/EDSR/0801x8_sigmoid.png" /> | <img src="logs/result/EDSR/0829x8_sigmoid.png" /> |
