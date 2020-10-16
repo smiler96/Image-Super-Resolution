@@ -10,7 +10,7 @@ from dataloader import SRDataset
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torch.optim.lr_scheduler import StepLR
-from utils import denormalize_
+from utils import denormalize_, load_status, log_status
 
 def check_logs(args):
     log_root = args.log_root
@@ -26,12 +26,18 @@ def check_logs(args):
         name = f'{args.model}_{args.act}_{args.n_feats}_{args.n_l3}'
     else:
         raise NotImplementedError
+
     # tensorboard log root
     args.tblog = log_root + f'/tblog/' + name + '/'
     if os.path.exists(args.tblog):
         # os.rmdir(args.tblog)
         shutil.rmtree(args.tblog)
     os.makedirs(args.tblog, exist_ok=True)
+
+    # train status
+    args.status_logger = log_root + f'/status/' + name + '.txt'
+    os.makedirs(log_root + f'/status/', exist_ok=True)
+    args.status_pth = log_root + f'/weight/' + name + '_latest.pth'
 
     # model weight .pth
     args.weight_pth = log_root + f'/weight/' + name + '.pth'
@@ -107,6 +113,24 @@ def train(args):
     # check the model
     module = import_module('model.' + args.model.lower())
     model = module.wrapper(args)
+
+    # continue train or not
+    start_epoch = 0
+    best_val_psnr = -1.0
+    best_val_loss = 1e8
+    if args.continue_train:
+        status_ = load_status(args.status_logger)
+        args.lr = status_['lr']
+        start_epoch = status_['epoch']
+        best_val_loss = status_['best_val_loss']
+
+        pretrained_dict = torch.load(status_['last_weight_pth'])
+        model_dict = model.state_dict()
+        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
+        model_dict.update(pretrained_dict)
+        model.load_state_dict(model_dict)
+        logger.info(f"Load model from {status_['last_weight_pth']}.pth for continuing train.")
+
     if not args.cpu:
         model = model.to(device)
     # check the optimizer
@@ -117,9 +141,7 @@ def train(args):
     criterion = check_loss_(args)
 
     # for iteration to train the model and validation for every epoch
-    best_val_psnr = -1.0
-    best_val_loss = 1e8
-    for epoch in range(args.epochs):
+    for epoch in range(start_epoch, args.epochs):
         torch.cuda.empty_cache()
 
         train_loss = 0.0
@@ -147,6 +169,18 @@ def train(args):
         train_loss = train_loss / (batch + 1)
         logger.info("Epoch-%d, train loss: %.4f" % (epoch, train_loss))
         writer.add_scalar(f'Train/Epochloss', train_loss, global_step=epoch)
+
+        # log the training status
+        model.eval().cpu()
+        torch.save(model.state_dict(), args.logger_name + '_latest.pth')
+        model.to(device).train()
+        status_ = {
+            'epoch': epoch,
+            'lr': lr_schedule.get_lr()[0],
+            'best_val_loss': best_val_loss,
+            'last_weight_pth': args.status_pth,
+        }
+        log_status(args.status_logger, **status_)
 
         # validation
         model.eval()
@@ -193,6 +227,7 @@ def train(args):
             best_val_loss = val_loss
             model.eval().cpu()
             torch.save(model.state_dict(), args.weight_pth)
+            logger.info(f"Save {args.weight_pth}")
             model.to(device).train()
 
 if __name__ == "__main__":
@@ -231,6 +266,7 @@ if __name__ == "__main__":
     args.act = 'leak_relu'
     args.batch_size = 8
     args.lr = 1e-5
+    args.continue_train = True
 
     with torch.autograd.detect_anomaly():
         train(args)

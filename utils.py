@@ -37,3 +37,27 @@ def denormalize_(x, type=0):
         raise NotImplementedError
 
     return x
+
+def log_status(file, **kwargs):
+    status = ''
+    for k, v in kwargs.items():
+        status += f'{k}: {v}\n'
+    with open(file, 'w') as f:
+        f.write(status)
+    print(kwargs)
+
+def load_status(file):
+    status = {}
+    with open(file, 'r') as f:
+        for line in f.readlines():
+            line = line.strip()
+            line = line.split(': ')
+            key = line[0]
+            val = line[1]
+            if key == 'epoch':
+                val = int(val)
+            elif key == 'lr' or key == 'best_val_loss':
+                val = float(val)
+            status[key] = val
+
+    return status

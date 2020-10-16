@@ -52,8 +52,8 @@ parser.add_argument('--normalization', type=int, default=1,
 parser.add_argument('--model', default='EDSR',
                     help='model name')
 
-parser.add_argument('--pre_train', type=str, default='',
-                    help='pre-trained model directory')
+parser.add_argument('--continue_train', action='store_true',
+                    help='continue train from last train status')
 
 parser.add_argument('--act', type=str, default='relu',
                     help='activation function after conv')
