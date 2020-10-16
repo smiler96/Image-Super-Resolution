@@ -90,6 +90,10 @@ parser.add_argument('--G', type=int, default=32,
 parser.add_argument('--C', type=int, default=6,
                     help='default number convs of RDB')
 
+# AFN CVPR2020
+parser.add_argument('--n_l3', type=int, default=3,
+                    help='default number of AFN_L3')
+
 # Option for Residual channel attention network (RCAN)
 parser.add_argument('--n_rg', type=int, default=10,
                     help='number of residual groups')

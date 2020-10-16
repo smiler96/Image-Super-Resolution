@@ -73,3 +73,22 @@ class UpsampleBlock(nn.Module):
     def forward(self, x):
         x = self.op(x)
         return x
+
+class SELayer(nn.Module):
+    def __init__(self, channels, reduction=16, act=nn.ReLU(True)):
+        super(SELayer, self).__init__()
+
+        self.op = nn.Sequential(*[
+            nn.AdaptiveAvgPool2d(1),
+            conv_(in_channels=channels, out_channels=channels // reduction, kernel_size=1, stride=1, padding=0,
+                  bias=True),
+            act,
+            conv_(in_channels=channels // reduction, out_channels=channels, kernel_size=1, stride=1, padding=0,
+                  bias=True),
+            nn.Sigmoid(),
+        ])
+
+    def forward(self, x):
+        s = self.op(x)
+        x = x * s
+        return x

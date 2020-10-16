@@ -15,6 +15,8 @@ def check_logs(args):
         name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}_{args.instance_norm}'
     elif args.model == 'RDN':
         name = f'{args.model}_{args.act}_{args.n_feats}_{args.D}_{args.G}_{args.C}'
+    elif args.model == 'AFN':
+        name = f'{args.model}_{args.act}_{args.n_feats}_{args.n_l3}'
     else:
         raise NotImplementedError
     # model weight .pth
@@ -86,6 +88,8 @@ def test(args):
             suffix_name = f'{args.last_act}_{args.instance_norm}'
         elif args.model == 'RDN':
             suffix_name = f'{args.act}_{args.n_feats}'
+        elif args.model == 'AFN':
+            suffix_name = f'{args.act}_{args.n_feats}_{args.n_l3}'
         else:
             raise NotImplementedError
         cv2.imwrite(os.path.join(args.result_root, data['fn'] + f'_' + suffix_name + '.png'), y_hat)
@@ -105,11 +109,16 @@ if __name__ == "__main__":
     # args.n_feats = 64
     # args.instance_norm = True
 
-    args.model = 'RDN'
-    args.n_feats = 64
-    args.D = 20
-    args.G = 32
-    args.C = 6
+    # args.model = 'RDN'
+    # args.n_feats = 64
+    # args.D = 20
+    # args.G = 32
+    # args.C = 6
+
+    args.model = 'AFN'
+    args.n_feats = 128
+    args.n_l3 = 3
+    args.act = 'leak_relu'
 
     # args.res_scale = 0.1
     # no normalization

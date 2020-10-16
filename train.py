@@ -22,6 +22,8 @@ def check_logs(args):
         name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}_{args.instance_norm}'
     elif args.model == 'RDN':
         name = f'{args.model}_{args.act}_{args.n_feats}_{args.D}_{args.G}_{args.C}'
+    elif args.model == 'AFN':
+        name = f'{args.model}_{args.act}_{args.n_feats}_{args.n_l3}'
     else:
         raise NotImplementedError
     # tensorboard log root
@@ -204,7 +206,7 @@ if __name__ == "__main__":
     args.augment = True
     args.normalization = 2
 
-    args.batch_size = 32
+    # args.batch_size = 16
 
     # args.model = 'EDSR'
     # args.res_scale = 0.1
@@ -217,11 +219,17 @@ if __name__ == "__main__":
     # args.n_rcab = 20
     # args.n_feats = 64
 
-    args.model = 'RDN'
-    args.n_feats = 64
-    args.D = 20
-    args.G = 32
-    args.C = 6
+    # args.model = 'RDN'
+    # args.n_feats = 64
+    # args.D = 20
+    # args.G = 32
+    # args.C = 6
+
+    args.model = 'AFN'
+    args.n_feats = 128
+    args.n_l3 = 3
+    args.act = 'leak_relu'
+    args.batch_size = 8
 
     with torch.autograd.detect_anomaly():
         train(args)

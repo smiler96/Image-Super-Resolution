@@ -27,6 +27,13 @@ Below are some examples showing how to run the <code>main.py</code> demos.
 
 <code>$ >python main.py --phase 'test' --model 'RDN' --test_file 'images/0801x8.png' --scale 8 --D 20 --G 32 --C 6 --n_feats 64 --normalization 2</code>
 
++ **AFN** CVPR2020
+
+<code>$ >python main.py --phase 'train' --model 'AFN' --hr_train_path 'DIV2K_train_HR/' --lr_train_path 'DIV2K_train_LR_x8/' --hr_val_path 
+ 'DIV2K_valid_HR/' --lr_val_path 'DIV2K_valid_LR_x8/' --scale 8 --n_feats 128 --n_l3 3 --act 'leaky_relu' --normalization 2 --augment</code>
+
+<code>$ >python main.py --phase 'test' --model 'AFN' --test_file 'images/0801x8.png' --scale 8 --n_feats 128 --n_l3 3 --act 'leaky_relu' --normalization 2</code>
+
 
 | Method  | Img1 | Img2 |
 | ---- | :----: | :----: | 
@@ -37,4 +44,5 @@ Below are some examples showing how to run the <code>main.py</code> demos.
 | RCAN |  <img src="logs/result/RCAN/0801x8_None.png" /> | <img src="logs/result/RCAN/0829x8_None.png" /> | 
 | RCAN_InstanceNorm |  <img src="logs/result/RCAN/0801x8_None_True.png" /> | <img src="logs/result/RCAN/0829x8_None_True.png" /> | 
 | RDN |  <img src="logs/result/RCAN/0801x8_None_True.png" /> | <img src="logs/result/RCAN/0829x8_None_True.png" /> | 
+| AFN |  <img src="logs/result/AFN/0801x8_leak_relu_128_3.png" /> | <img src="logs/result/AFN/0829x8_leak_relu_128_3.png" /> | 
  
