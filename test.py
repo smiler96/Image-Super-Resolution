@@ -98,7 +98,7 @@ def test(args):
 if __name__ == "__main__":
     from option import args
 
-    args.test_file = 'images/0829x8.png'
+    args.test_file = 'images/0801x8.png'
     args.scale = 8
     args.normalization = 2
 

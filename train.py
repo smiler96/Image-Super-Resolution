@@ -230,6 +230,7 @@ if __name__ == "__main__":
     args.n_l3 = 3
     args.act = 'leak_relu'
     args.batch_size = 8
+    args.lr = 1e-5
 
     with torch.autograd.detect_anomaly():
         train(args)
