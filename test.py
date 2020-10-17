@@ -13,6 +13,8 @@ def check_logs(args):
         name = f'{args.model}_{args.act}_{args.n_resblocks}_{args.n_feats}_{args.last_act}'
     elif args.model == 'RCAN':
         name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}_{args.instance_norm}'
+    elif args.model == 'HAN':
+        name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}'
     elif args.model == 'RDN':
         name = f'{args.model}_{args.act}_{args.n_feats}_{args.D}_{args.G}_{args.C}'
     elif args.model == 'AFN':
@@ -90,6 +92,8 @@ def test(args):
             suffix_name = f'{args.last_act}'
         elif args.model == 'RCAN':
             suffix_name = f'{args.last_act}_{args.instance_norm}'
+        elif args.model == 'HAN':
+            suffix_name = f'{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}'
         elif args.model == 'RDN':
             suffix_name = f'{args.act}_{args.n_feats}'
         elif args.model == 'AFN':
@@ -106,7 +110,7 @@ def test(args):
 if __name__ == "__main__":
     from option import args
 
-    args.test_file = 'images/0801x8.png'
+    args.test_file = 'images/0829x8.png'
     args.scale = 8
     args.normalization = 2
 
@@ -143,22 +147,27 @@ if __name__ == "__main__":
     # args.normalization = 1
 
     # ddbpn
-    args.model = 'DDBPN'
-    args.batch_size = 14
-    args.n_feats = 128
-    args.nr = 32
-    args.n_depths = 6
+    # args.model = 'DDBPN'
+    # args.batch_size = 14
+    # args.n_feats = 128
+    # args.nr = 32
+    # args.n_depths = 6
+
+    # han
+    # args.model = 'HAN'
+    # args.batch_size = 16
+    # args.act = 'relu'
+    # args.n_rg = 10
+    # args.n_rcab = 20
+    # args.n_feats = 128
 
     # ddbpn_mr
     args.model = 'DBPN_MR'
-    args.batch_size = 14
-    args.n_feats = 256
-    args.nr = 64
-    args.n_depths = 7
+    args.batch_size = 2
+    args.n_feats = 128
+    args.nr = 32
+    args.n_depths = 6
     args.n_iters = 3
     args.global_res = True
 
     test(args)
-
-
-

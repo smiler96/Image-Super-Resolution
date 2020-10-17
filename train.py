@@ -20,6 +20,8 @@ def check_logs(args):
         name = f'{args.model}_{args.act}_{args.n_resblocks}_{args.n_feats}_{args.last_act}'
     elif args.model == 'RCAN':
         name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}_{args.instance_norm}'
+    elif args.model == 'HAN':
+        name = f'{args.model}_{args.act}_{args.n_rg}_{args.n_rcab}_{args.n_feats}'
     elif args.model == 'RDN':
         name = f'{args.model}_{args.act}_{args.n_feats}_{args.D}_{args.G}_{args.C}'
     elif args.model == 'AFN':
@@ -247,7 +249,7 @@ if __name__ == "__main__":
     args.normalization = 2
     args.patch_size = 192
     # args.batch_size = 16
-    args.continue_train = True
+    args.continue_train = False
 
     # EDSR
     # args.model = 'EDSR'
@@ -284,11 +286,20 @@ if __name__ == "__main__":
     # args.decay_step = 50
 
     # ddbpn
-    args.model = 'DDBPN'
-    args.batch_size = 14
+    # args.model = 'DDBPN'
+    # args.batch_size = 14
+    # args.n_feats = 128
+    # args.nr = 32
+    # args.n_depths = 6
+
+    # ddbpn_mr
+    args.model = 'DBPN_MR'
+    args.batch_size = 5
     args.n_feats = 128
     args.nr = 32
     args.n_depths = 6
+    args.n_iters = 3
+    args.global_res = True
 
     with torch.autograd.detect_anomaly():
         train(args)
