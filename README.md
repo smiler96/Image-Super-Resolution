@@ -1,6 +1,19 @@
 # Image Super Resolution  
 
 ## Examples
+
+| Method  | Img1 | Img2 |
+| ---- | :----: | :----: | 
+| LR | <img src="images/0801x8.png" /> | <img src="images/0829x8.png" /> |
+| HR | <img src="images/0801.png" /> | <img src="images/0829.png" /> |
+| EDSR_sigmoid | <img src="logs/result/EDSR/0801x8_sigmoid.png" /> | <img src="logs/result/EDSR/0829x8_sigmoid.png" /> |
+| EDSR_None |  <img src="logs/result/EDSR/0801x8_None.png" /> | <img src="logs/result/EDSR/0829x8_None.png" /> | 
+| RCAN |  <img src="logs/result/RCAN/0801x8_None.png" /> | <img src="logs/result/RCAN/0829x8_None.png" /> | 
+| RCAN_InstanceNorm |  <img src="logs/result/RCAN/0801x8_None_True.png" /> | <img src="logs/result/RCAN/0829x8_None_True.png" /> | 
+| RDN |  <img src="logs/result/RCAN/0801x8_None_True.png" /> | <img src="logs/result/RCAN/0829x8_None_True.png" /> | 
+| AFN |  <img src="logs/result/AFN/0801x8_leak_relu_128_3.png" /> | <img src="logs/result/AFN/0829x8_leak_relu_128_3.png" /> | 
+
+## Usage
 Below are some examples showing how to run the <code>main.py</code> demos. 
 
 + **EDSR** CVPR2017
@@ -45,15 +58,10 @@ Below are some examples showing how to run the <code>main.py</code> demos.
 
 <code>$ >python main.py --phase 'test' --model 'AFN' --test_file 'images/0801x8.png' --scale 8 --n_feats 128 --n_l3 3 --act 'leaky_relu' --normalization 2</code>
 
++ **HAN** ECCV2020
 
-| Method  | Img1 | Img2 |
-| ---- | :----: | :----: | 
-| LR | <img src="images/0801x8.png" /> | <img src="images/0829x8.png" /> |
-| HR | <img src="images/0801.png" /> | <img src="images/0829.png" /> |
-| EDSR_sigmoid | <img src="logs/result/EDSR/0801x8_sigmoid.png" /> | <img src="logs/result/EDSR/0829x8_sigmoid.png" /> |
-| EDSR_None |  <img src="logs/result/EDSR/0801x8_None.png" /> | <img src="logs/result/EDSR/0829x8_None.png" /> | 
-| RCAN |  <img src="logs/result/RCAN/0801x8_None.png" /> | <img src="logs/result/RCAN/0829x8_None.png" /> | 
-| RCAN_InstanceNorm |  <img src="logs/result/RCAN/0801x8_None_True.png" /> | <img src="logs/result/RCAN/0829x8_None_True.png" /> | 
-| RDN |  <img src="logs/result/RCAN/0801x8_None_True.png" /> | <img src="logs/result/RCAN/0829x8_None_True.png" /> | 
-| AFN |  <img src="logs/result/AFN/0801x8_leak_relu_128_3.png" /> | <img src="logs/result/AFN/0829x8_leak_relu_128_3.png" /> | 
- 
+<code>$ >python main.py --phase 'train' --model 'HAN' --hr_train_path 'DIV2K_train_HR/' --lr_train_path 'DIV2K_train_LR_x8/' --hr_val_path 
+ 'DIV2K_valid_HR/' --lr_val_path 'DIV2K_valid_LR_x8/' --scale 8 --n_rg 10 --n_rcab 20 --n_feats 128 --normalization 2 --augment</code>
+
+<code>$ >python main.py --phase 'test' --model 'HAN' --test_file 'images/0801x8.png' --scale 8 --n_rg 10 --n_rcab 20 --n_feats 128 --normalization 2</code>
+
