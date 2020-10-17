@@ -17,6 +17,10 @@ def check_logs(args):
         name = f'{args.model}_{args.act}_{args.n_feats}_{args.D}_{args.G}_{args.C}'
     elif args.model == 'AFN':
         name = f'{args.model}_{args.act}_{args.n_feats}_{args.n_l3}'
+    elif args.model == 'DDBPN':
+        name = f'{args.model}_{args.n_feats}_{args.nr}_{args.n_depths}'
+    elif args.model == 'DBPN_MR':
+        name = f'{args.model}_{args.n_feats}_{args.nr}_{args.n_depths}_{args.n_iters}_{args.global_res}'
     else:
         raise NotImplementedError
     # model weight .pth
@@ -90,6 +94,10 @@ def test(args):
             suffix_name = f'{args.act}_{args.n_feats}'
         elif args.model == 'AFN':
             suffix_name = f'{args.act}_{args.n_feats}_{args.n_l3}'
+        elif args.model == 'DDBPN':
+            suffix_name = f'{args.n_feats}_{args.nr}_{args.n_depths}'
+        elif args.model == 'DBPN_MR':
+            suffix_name = f'{args.n_feats}_{args.nr}_{args.n_depths}_{args.n_iters}_{args.global_res}'
         else:
             raise NotImplementedError
         cv2.imwrite(os.path.join(args.result_root, data['fn'] + f'_' + suffix_name + '.png'), y_hat)
@@ -101,6 +109,12 @@ if __name__ == "__main__":
     args.test_file = 'images/0801x8.png'
     args.scale = 8
     args.normalization = 2
+
+    # args.model = 'EDSR'
+    # args.res_scale = 0.1
+    # args.last_act = None
+    # args.act = 'relu'
+    # args.n_feats = 256
 
     # args.model = 'RCAN'
     # args.act = 'relu'
@@ -115,10 +129,10 @@ if __name__ == "__main__":
     # args.G = 32
     # args.C = 6
 
-    args.model = 'AFN'
-    args.n_feats = 128
-    args.n_l3 = 3
-    args.act = 'leak_relu'
+    # args.model = 'AFN'
+    # args.n_feats = 128
+    # args.n_l3 = 3
+    # args.act = 'leak_relu'
 
     # args.res_scale = 0.1
     # no normalization
@@ -127,6 +141,22 @@ if __name__ == "__main__":
     # divided by 255.0
     # args.last_act = 'sigmoid'
     # args.normalization = 1
+
+    # ddbpn
+    args.model = 'DDBPN'
+    args.batch_size = 14
+    args.n_feats = 128
+    args.nr = 32
+    args.n_depths = 6
+
+    # ddbpn_mr
+    args.model = 'DBPN_MR'
+    args.batch_size = 14
+    args.n_feats = 256
+    args.nr = 64
+    args.n_depths = 7
+    args.n_iters = 3
+    args.global_res = True
 
     test(args)
 

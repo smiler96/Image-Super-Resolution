@@ -24,6 +24,10 @@ def check_logs(args):
         name = f'{args.model}_{args.act}_{args.n_feats}_{args.D}_{args.G}_{args.C}'
     elif args.model == 'AFN':
         name = f'{args.model}_{args.act}_{args.n_feats}_{args.n_l3}'
+    elif args.model == 'DDBPN':
+        name = f'{args.model}_{args.n_feats}_{args.nr}_{args.n_depths}'
+    elif args.model == 'DBPN_MR':
+        name = f'{args.model}_{args.n_feats}_{args.nr}_{args.n_depths}_{args.n_iters}_{args.global_res}'
     else:
         raise NotImplementedError
 
@@ -129,7 +133,7 @@ def train(args):
         pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
         model_dict.update(pretrained_dict)
         model.load_state_dict(model_dict)
-        logger.info(f"Load model from {status_['last_weight_pth']}.pth for continuing train.")
+        logger.info(f"Load model from {status_['last_weight_pth']} for continuing train.")
 
     if not args.cpu:
         model = model.to(device)
@@ -169,18 +173,6 @@ def train(args):
         train_loss = train_loss / (batch + 1)
         logger.info("Epoch-%d, train loss: %.4f" % (epoch, train_loss))
         writer.add_scalar(f'Train/Epochloss', train_loss, global_step=epoch)
-
-        # log the training status
-        model.eval().cpu()
-        torch.save(model.state_dict(), args.logger_name + '_latest.pth')
-        model.to(device).train()
-        status_ = {
-            'epoch': epoch,
-            'lr': lr_schedule.get_lr()[0],
-            'best_val_loss': best_val_loss,
-            'last_weight_pth': args.status_pth,
-        }
-        log_status(args.status_logger, **status_)
 
         # validation
         model.eval()
@@ -230,6 +222,19 @@ def train(args):
             logger.info(f"Save {args.weight_pth}")
             model.to(device).train()
 
+        # log the training status
+        model.eval().cpu()
+        torch.save(model.state_dict(), args.status_pth)
+        model.to(device).train()
+        status_ = {
+            'epoch': epoch,
+            'lr': lr_schedule.get_lr()[0],
+            'best_val_loss': best_val_loss,
+            'last_weight_pth': args.status_pth,
+        }
+        log_status(args.status_logger, **status_)
+
+
 if __name__ == "__main__":
     from option import args
 
@@ -240,13 +245,20 @@ if __name__ == "__main__":
     args.scale = 8
     args.augment = True
     args.normalization = 2
-
+    args.patch_size = 192
     # args.batch_size = 16
+    args.continue_train = True
 
+    # EDSR
     # args.model = 'EDSR'
     # args.res_scale = 0.1
     # args.last_act = None
+    # args.act = 'relu'
+    # args.n_feats = 256
+    # args.n_resblocks = 32
+    # args.decay_step = 100
 
+    # RCAN
     # args.model = 'RCAN'
     # args.act = 'relu'
     # args.instance_norm = True
@@ -254,19 +266,29 @@ if __name__ == "__main__":
     # args.n_rcab = 20
     # args.n_feats = 64
 
+    # RDN
     # args.model = 'RDN'
     # args.n_feats = 64
     # args.D = 20
     # args.G = 32
     # args.C = 6
 
-    args.model = 'AFN'
+    # AFN
+    # args.model = 'AFN'
+    # args.n_feats = 128
+    # args.n_l3 = 3
+    # args.act = 'leak_relu'
+    # args.batch_size = 8
+    # args.lr = 1e-5
+    # args.continue_train = True
+    # args.decay_step = 50
+
+    # ddbpn
+    args.model = 'DDBPN'
+    args.batch_size = 14
     args.n_feats = 128
-    args.n_l3 = 3
-    args.act = 'leak_relu'
-    args.batch_size = 8
-    args.lr = 1e-5
-    args.continue_train = True
+    args.nr = 32
+    args.n_depths = 6
 
     with torch.autograd.detect_anomaly():
         train(args)

@@ -44,7 +44,7 @@ def log_status(file, **kwargs):
         status += f'{k}: {v}\n'
     with open(file, 'w') as f:
         f.write(status)
-    print(kwargs)
+    # print(kwargs)
 
 def load_status(file):
     status = {}

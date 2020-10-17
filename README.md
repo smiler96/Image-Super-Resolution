@@ -17,8 +17,19 @@ Below are some examples showing how to run the <code>main.py</code> demos.
 
 <code>$ >python main.py --phase 'test' --model 'RCAN' --test_file 'images/0801x8.png' --scale 8 --n_rg 10 --n_rcab 20 --n_feats 64 --normalization 2</code>
 
-+ **DBPN** CVPR2018
++ **DDBPN** CVPR2018
 
+<code>$ >python main.py --phase 'train' --model 'DDBPN' --hr_train_path 'DIV2K_train_HR/' --lr_train_path 'DIV2K_train_LR_x8/' --hr_val_path 
+ 'DIV2K_valid_HR/' --lr_val_path 'DIV2K_valid_LR_x8/' --scale 8 --n_feats 128 --nr 32 --n_depths 6 --normalization 2 --augment</code>
+
+<code>$ >python main.py --phase 'test' --model 'DDBPN' --test_file 'images/0801x8.png' --scale 8 --n_feats 128 --nr 32 --n_depths 6 --normalization 2</code>
+
++ **DBPN-RES-MR** Arxiv2019
+
+<code>$ >python main.py --phase 'train' --model 'DBPN_MR' --hr_train_path 'DIV2K_train_HR/' --lr_train_path 'DIV2K_train_LR_x8/' --hr_val_path 
+ 'DIV2K_valid_HR/' --lr_val_path 'DIV2K_valid_LR_x8/' --scale 8 --n_feats 256 --nr 64 --n_depths 7 --n_iters 3  --global_res --normalization 2 --augment</code>
+
+<code>$ >python main.py --phase 'test' --model 'DBPN_MR' --test_file 'images/0801x8.png' --scale 8 --n_feats 256 --nr 64 --n_depths 7 --n_iters 3 --global_res --normalization 2</code>
 
 + **RDN** CVPR2018
 

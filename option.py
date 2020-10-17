@@ -94,6 +94,16 @@ parser.add_argument('--C', type=int, default=6,
 parser.add_argument('--n_l3', type=int, default=3,
                     help='default number of AFN_L3')
 
+# DDBPN CVPR2018
+parser.add_argument('--nr', type=int, default=32,
+                    help='default number of nr in ddbpn')
+parser.add_argument('--n_depths', type=int, default=6,
+                    help='default number of projection depths in ddbpn')
+parser.add_argument('--n_iters', type=int, default=3,
+                    help='default number of recurrent iterations in dbpn-mr')
+parser.add_argument('--global_res', action='store_true',
+                    help='apply the global residual connection or not')
+
 # Option for Residual channel attention network (RCAN)
 parser.add_argument('--n_rg', type=int, default=10,
                     help='number of residual groups')
