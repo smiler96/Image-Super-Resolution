@@ -248,7 +248,7 @@ if __name__ == "__main__":
     args.augment = True
     args.normalization = 2
     args.patch_size = 192
-    # args.batch_size = 16
+    args.batch_size = 16
     args.continue_train = False
 
     # EDSR
@@ -293,13 +293,21 @@ if __name__ == "__main__":
     # args.n_depths = 6
 
     # ddbpn_mr
-    args.model = 'DBPN_MR'
-    args.batch_size = 5
+    # args.model = 'DBPN_MR'
+    # args.batch_size = 5
+    # args.n_feats = 128
+    # args.nr = 32
+    # args.n_depths = 6
+    # args.n_iters = 3
+    # args.global_res = True
+
+    # HAN
+    args.model = 'HAN'
+    args.act = 'relu'
+    args.n_rg = 10
+    args.n_rcab = 20
+    args.batch_size = 8
     args.n_feats = 128
-    args.nr = 32
-    args.n_depths = 6
-    args.n_iters = 3
-    args.global_res = True
 
     with torch.autograd.detect_anomaly():
         train(args)

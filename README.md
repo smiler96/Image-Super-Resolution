@@ -12,6 +12,9 @@
 | RCAN_InstanceNorm |  <img src="logs/result/RCAN/0801x8_None_True.png" /> | <img src="logs/result/RCAN/0829x8_None_True.png" /> | 
 | RDN |  <img src="logs/result/RCAN/0801x8_None_True.png" /> | <img src="logs/result/RCAN/0829x8_None_True.png" /> | 
 | AFN |  <img src="logs/result/AFN/0801x8_leak_relu_128_3.png" /> | <img src="logs/result/AFN/0829x8_leak_relu_128_3.png" /> | 
+| DDBPN |  <img src="logs/result/DDBPN/0801x8_128_32_6.png" /> | <img src="logs/result/DDBPN/0829x8_128_32_6.png" /> | 
+| DBPN-RES-MR |  <img src="logs/result/DBPN_MR/0801x8_128_32_6_3_True.png" /> | <img src="logs/result/DBPN_MR/0829x8_128_32_6_3_True.png" /> | 
+| HAN |  <img src="logs/result/HAN/0801x8_relu_10_20_128.png" /> | <img src="logs/result/HAN/0829x8_relu_10_20_128.png" /> | 
 
 ## Usage
 Below are some examples showing how to run the <code>main.py</code> demos. 

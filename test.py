@@ -110,7 +110,7 @@ def test(args):
 if __name__ == "__main__":
     from option import args
 
-    args.test_file = 'images/0829x8.png'
+    args.test_file = 'images/0801x8.png'
     args.scale = 8
     args.normalization = 2
 
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     # args.n_rg = 10
     # args.n_rcab = 20
     # args.n_feats = 64
-    # args.instance_norm = True
+    # args.instance_norm = False
 
     # args.model = 'RDN'
     # args.n_feats = 64
@@ -138,15 +138,6 @@ if __name__ == "__main__":
     # args.n_l3 = 3
     # args.act = 'leak_relu'
 
-    # args.res_scale = 0.1
-    # no normalization
-    # args.last_act = None
-
-    # divided by 255.0
-    # args.last_act = 'sigmoid'
-    # args.normalization = 1
-
-    # ddbpn
     # args.model = 'DDBPN'
     # args.batch_size = 14
     # args.n_feats = 128
@@ -154,20 +145,20 @@ if __name__ == "__main__":
     # args.n_depths = 6
 
     # han
-    # args.model = 'HAN'
-    # args.batch_size = 16
-    # args.act = 'relu'
-    # args.n_rg = 10
-    # args.n_rcab = 20
-    # args.n_feats = 128
+    args.model = 'HAN'
+    args.batch_size = 16
+    args.act = 'relu'
+    args.n_rg = 10
+    args.n_rcab = 20
+    args.n_feats = 128
 
     # ddbpn_mr
-    args.model = 'DBPN_MR'
-    args.batch_size = 2
-    args.n_feats = 128
-    args.nr = 32
-    args.n_depths = 6
-    args.n_iters = 3
-    args.global_res = True
+    # args.model = 'DBPN_MR'
+    # args.batch_size = 2
+    # args.n_feats = 128
+    # args.nr = 32
+    # args.n_depths = 6
+    # args.n_iters = 3
+    # args.global_res = True
 
     test(args)
