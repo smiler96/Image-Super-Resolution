@@ -43,33 +43,34 @@ class CSAM(nn.Module):
         super(CSAM, self).__init__()
 
         self.conv = nn.Conv3d(1, 1, 3, 1, 1)
+        self.softmax = nn.Softmax(dim=-1)
         self.gamma = nn.Parameter(torch.zeros(1))
         # self.softmax  = nn.Softmax(dim=-1)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
         m_batchsize, C, height, width = x.size()
-        out = x.unsqueeze(1)
-        out = self.sigmoid(self.conv(out))
+        # out = x.unsqueeze(1)
+        # out = self.sigmoid(self.conv(out))
 
-        # proj_query = x.view(m_batchsize, N, -1)
-        # proj_key = x.view(m_batchsize, N, -1).permute(0, 2, 1)
-        # energy = torch.bmm(proj_query, proj_key)
-        # energy_new = torch.max(energy, -1, keepdim=True)[0].expand_as(energy)-energy
-        # attention = self.softmax(energy_new)
-        # proj_value = x.view(m_batchsize, N, -1)
+        proj_query = x.view(m_batchsize, C, -1)
+        proj_key = x.view(m_batchsize, C, -1).permute(0, 2, 1)
+        energy = torch.bmm(proj_query, proj_key) # CxC
+        energy_new = torch.max(energy, -1, keepdim=True)[0].expand_as(energy)-energy
+        attention = self.softmax(energy_new)
+        proj_value = x.view(m_batchsize, C, -1)
 
-        # out = torch.bmm(attention, proj_value)
-        # out = out.view(m_batchsize, N, C, height, width)
+        out = torch.bmm(attention, proj_value)
 
         out = self.gamma * out
-        out = out.view(m_batchsize, -1, height, width)
+        out = out.view(m_batchsize, C, height, width)
         x = x * out + x
         return x
 
 class HAN(nn.Module):
-    def __init__(self, in_c=3, out_c=3, scale=4, n_feats=128, n_rg=10, n_rcab=20, act=nn.ReLU(True)):
+    def __init__(self, in_c=3, out_c=3, scale=4, n_feats=128, n_rg=10, n_rcab=20, act=nn.ReLU(True), global_res=False):
         super(HAN, self).__init__()
+        self.global_res = global_res
 
         self.head = conv_(in_c, n_feats)
 
@@ -89,6 +90,8 @@ class HAN(nn.Module):
           )
 
     def forward(self, x):
+        if self.global_res:
+            x0 = nn.Upsample(scale_factor=self.scale, mode='bicubic')(x)
         x = self.head(x)
 
         res = x
@@ -106,7 +109,8 @@ class HAN(nn.Module):
 
         x = x + res
         x = self.tail(x)
-
+        if self.global_res:
+            x = x + x0
         return x
 
 if __name__ == "__main__":
@@ -114,7 +118,7 @@ if __name__ == "__main__":
     import torch
     import torchsummary
 
-    model = HAN(in_c=3, out_c=3, scale=8, n_feats=128, n_rg=10, n_rcab=20)
+    model = HAN(in_c=3, out_c=3, scale=8, n_feats=128, n_rg=10, n_rcab=20, global_res=False)
     print(torchsummary.summary(model, (3, 24, 24), device='cpu'))
 
     x = np.random.uniform(0, 1, [2, 3, 24, 24]).astype(np.float32)

@@ -46,7 +46,7 @@ class DBPN_MR(nn.Module):
 
     def forward(self, x):
         if self.global_res:
-            x0 = nn.Upsample(scale_factor=self.scale, mode='bicubic')
+            x0 = nn.Upsample(scale_factor=self.scale, mode='bicubic')(x)
         x = self.head(x)
 
         # iterative recurrent

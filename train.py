@@ -293,13 +293,13 @@ if __name__ == "__main__":
     # args.n_depths = 6
 
     # ddbpn_mr
-    # args.model = 'DBPN_MR'
-    # args.batch_size = 5
-    # args.n_feats = 128
-    # args.nr = 32
-    # args.n_depths = 6
-    # args.n_iters = 3
-    # args.global_res = True
+    args.model = 'DBPN_MR'
+    args.batch_size = 5
+    args.n_feats = 128
+    args.nr = 32
+    args.n_depths = 6
+    args.n_iters = 3
+    args.global_res = True
 
     # HAN
     args.model = 'HAN'
@@ -308,6 +308,8 @@ if __name__ == "__main__":
     args.n_rcab = 20
     args.batch_size = 8
     args.n_feats = 128
+    args.global_res = True
+
 
     with torch.autograd.detect_anomaly():
         train(args)

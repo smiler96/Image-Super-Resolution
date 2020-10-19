@@ -61,7 +61,9 @@ Below are some examples showing how to run the <code>main.py</code> demos.
 
 <code>$ >python main.py --phase 'test' --model 'AFN' --test_file 'images/0801x8.png' --scale 8 --n_feats 128 --n_l3 3 --act 'leaky_relu' --normalization 2</code>
 
-+ **HAN** ECCV2020
++ **HAN** ECCV2020 
+
+    train explosion at 61 epoch when bs is 8
 
 <code>$ >python main.py --phase 'train' --model 'HAN' --hr_train_path 'DIV2K_train_HR/' --lr_train_path 'DIV2K_train_LR_x8/' --hr_val_path 
  'DIV2K_valid_HR/' --lr_val_path 'DIV2K_valid_LR_x8/' --scale 8 --n_rg 10 --n_rcab 20 --n_feats 128 --normalization 2 --augment</code>
