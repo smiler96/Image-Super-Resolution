@@ -110,7 +110,7 @@ def test(args):
 if __name__ == "__main__":
     from option import args
 
-    args.test_file = 'images/0829x8.png'
+    args.test_file = 'images/0845x8.png'
     args.scale = 8
     args.normalization = 2
 
@@ -153,12 +153,12 @@ if __name__ == "__main__":
     args.n_feats = 128
 
     # ddbpn_mr
-    # args.model = 'DBPN_MR'
-    # args.batch_size = 2
-    # args.n_feats = 128
-    # args.nr = 32
-    # args.n_depths = 6
-    # args.n_iters = 3
-    # args.global_res = True
+    args.model = 'DBPN_MR'
+    args.batch_size = 2
+    args.n_feats = 256
+    args.nr = 64
+    args.n_depths = 7
+    args.n_iters = 3
+    args.global_res = True
 
     test(args)
