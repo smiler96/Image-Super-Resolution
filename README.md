@@ -2,7 +2,7 @@
 
 ## Specifaication
 
-1. All the methods are executed on the navidia 1066GPU.
+1. All the methods are executed on the nvidia 1066GPU.
 2. No pretrained on the 2x resolution dataset, 8x resolution training from scratch.
 3. No psnr calculation.
 
