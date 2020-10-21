@@ -1,6 +1,12 @@
 # Image Super Resolution  
 
-## Examples
+## Specifaication
+
+1. All the methods are executed on the navidia 1066GPU.
+2. No pretrained on the 2x resolution dataset, 8x resolution training from scratch.
+3. No psnr calculation.
+
+## Example Results
 
 | Method  | Img1 | Img2 |
 | ---- | :----: | :----: | 
@@ -14,7 +20,7 @@
 | AFN |  <img src="logs/result/AFN/0801x8_leak_relu_128_3.png" /> | <img src="logs/result/AFN/0829x8_leak_relu_128_3.png" /> | 
 | DDBPN |  <img src="logs/result/DDBPN/0801x8_128_32_6.png" /> | <img src="logs/result/DDBPN/0829x8_128_32_6.png" /> | 
 | DBPN-RES-MR |  <img src="logs/result/DBPN_MR/0801x8_256_64_7_3_True.png" /> | <img src="logs/result/DBPN_MR/0829x8_256_64_7_3_True.png" /> | 
-| HAN |  <img src="logs/result/HAN/0801x8_relu_10_20_128.png" /> | <img src="logs/result/HAN/0829x8_relu_10_20_128.png" /> | 
+| HAN-RES |  <img src="logs/result/HAN/0801x8_relu_10_20_128.png" /> | <img src="logs/result/HAN/0829x8_relu_10_20_128.png" /> | 
 
 ## Training Loss
 
