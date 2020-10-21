@@ -16,6 +16,12 @@
 | DBPN-RES-MR |  <img src="logs/result/DBPN_MR/0801x8_256_64_7_3_True.png" /> | <img src="logs/result/DBPN_MR/0829x8_256_64_7_3_True.png" /> | 
 | HAN |  <img src="logs/result/HAN/0801x8_relu_10_20_128.png" /> | <img src="logs/result/HAN/0829x8_relu_10_20_128.png" /> | 
 
+## Training Loss
+
+<p>
+	<img src="images/loss.png" />
+</p>
+
 ## Usage
 Below are some examples showing how to run the <code>main.py</code> demos. 
 
